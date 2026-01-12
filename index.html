@@ -14,20 +14,21 @@
             <p class="subtitle">タスク管理 × 習慣トラッカー</p>
             <p class="sync-badge">☁️ クラウド同期対応</p>
             
-            <!-- Google ログイン -->
-            <div id="googleLoginForm">
-                <button id="googleLoginBtn" class="btn btn-google">
-                    <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                    </svg>
-                    Google でログイン
-                </button>
-                <p class="login-info">※ Googleアカウントで簡単ログイン</p>
-                <p class="login-info">※ PC・スマホ間で自動同期</p>
+            <div id="loginStatus" style="margin: 20px 0; padding: 15px; background: #f0f0f0; border-radius: 8px; font-size: 14px;">
+                読み込み中...
             </div>
+            
+            <button id="googleLoginBtn" class="btn btn-google" style="display:none;">
+                <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
+                Google でログイン
+            </button>
+            <p class="login-info">※ Googleアカウントで簡単ログイン</p>
+            <p class="login-info">※ PC・スマホ間で自動同期</p>
         </div>
     </div>
 
@@ -55,308 +56,17 @@
             <button class="nav-tab" data-view="goals">🎯 目標</button>
         </nav>
 
-        <!-- ダッシュボード表示 -->
-        <div id="dashboardView" class="view-container">
-            <!-- 概要カード -->
-            <div class="summary-cards">
-                <div class="summary-card">
-                    <div class="summary-icon">📋</div>
-                    <div class="summary-info">
-                        <div class="summary-label">今日のタスク</div>
-                        <div class="summary-value" id="todayTasksCount">0</div>
-                    </div>
-                </div>
-                <div class="summary-card">
-                    <div class="summary-icon">🔥</div>
-                    <div class="summary-info">
-                        <div class="summary-label">習慣達成率</div>
-                        <div class="summary-value" id="habitCompletionRate">0%</div>
-                    </div>
-                </div>
-                <div class="summary-card">
-                    <div class="summary-icon">⚡</div>
-                    <div class="summary-info">
-                        <div class="summary-label">最長連続記録</div>
-                        <div class="summary-value" id="longestStreak">0日</div>
-                    </div>
-                </div>
-                <div class="summary-card">
-                    <div class="summary-icon">⏱️</div>
-                    <div class="summary-info">
-                        <div class="summary-label">今日の作業時間</div>
-                        <div class="summary-value" id="todayWorkTime">0h</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 今日の習慣クイックチェック -->
-            <div class="dashboard-section">
-                <h2>🔥 今日の習慣</h2>
-                <div id="todayHabitsQuick" class="habits-quick-list"></div>
-            </div>
-
-            <!-- 今日のタスク -->
-            <div class="dashboard-section">
-                <h2>📋 今日のタスク</h2>
-                <div id="todayTasksList" class="tasks-list"></div>
-            </div>
-        </div>
-
-        <!-- タスクボード表示 -->
-        <div id="tasksView" class="view-container" style="display: none;">
-            <div class="control-bar">
-                <button id="addTaskBtn" class="btn btn-primary">➕ タスク追加</button>
-                <button id="addHabitTaskBtn" class="btn btn-success">🔄 習慣タスク追加</button>
-                <div class="filter-group">
-                    <label>表示:</label>
-                    <select id="taskFilter" class="filter-select">
-                        <option value="all">すべて</option>
-                        <option value="habit">習慣タスク</option>
-                        <option value="normal">通常タスク</option>
-                        <option value="project">プロジェクト</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- カンバンボード -->
-            <div class="kanban-board">
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <h3>📝 未着手</h3>
-                        <span class="task-count" id="todoCount">0</span>
-                    </div>
-                    <div id="todoColumn" class="task-list" data-status="todo"></div>
-                </div>
-
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <h3>⚙️ 進行中</h3>
-                        <span class="task-count" id="inProgressCount">0</span>
-                    </div>
-                    <div id="inProgressColumn" class="task-list" data-status="inProgress"></div>
-                </div>
-
-                <div class="kanban-column">
-                    <div class="column-header">
-                        <h3>✅ 完了</h3>
-                        <span class="task-count" id="doneCount">0</span>
-                    </div>
-                    <div id="doneColumn" class="task-list" data-status="done"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 習慣管理表示 -->
-        <div id="habitsView" class="view-container" style="display: none;">
-            <div class="control-bar">
-                <button id="addHabitBtn" class="btn btn-primary">➕ 習慣追加</button>
-                <button id="habitCalendarBtn" class="btn btn-info">📅 カレンダー表示</button>
-            </div>
-
-            <div id="habitsGrid" class="habits-grid"></div>
-        </div>
-
-        <!-- レポート表示 -->
-        <div id="reportsView" class="view-container" style="display: none;">
-            <div class="control-bar">
-                <div class="filter-group">
-                    <label>期間:</label>
-                    <select id="reportPeriod" class="filter-select">
-                        <option value="week">今週</option>
-                        <option value="month">今月</option>
-                        <option value="year">今年</option>
-                    </select>
-                </div>
-            </div>
-
-            <div id="reportContent" class="report-content"></div>
-        </div>
-
-        <!-- 目標表示 -->
-        <div id="goalsView" class="view-container" style="display: none;">
-            <div class="control-bar">
-                <button id="addGoalBtn" class="btn btn-primary">➕ 目標追加</button>
-            </div>
-
-            <div id="goalsGrid" class="goals-grid"></div>
-        </div>
-
-        <!-- データ管理ボタン -->
-        <div class="data-controls">
-            <button id="exportBtn" class="btn btn-info">📥 エクスポート</button>
-            <button id="importBtn" class="btn btn-success">📤 インポート</button>
+        <div id="mainContent" style="padding: 20px;">
+            <h2>ダッシュボード</h2>
+            <p>アプリが正常に動作しています！</p>
         </div>
     </div>
-
-    <!-- タスクモーダル -->
-    <div id="taskModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="taskModalTitle">タスクを追加</h2>
-            <div class="form-group">
-                <label>タスク名 *</label>
-                <input type="text" id="taskNameInput" class="input-field" placeholder="タスク名を入力">
-            </div>
-            <div class="form-group">
-                <label>種類</label>
-                <select id="taskTypeInput" class="input-field">
-                    <option value="normal">通常タスク</option>
-                    <option value="habit">習慣タスク</option>
-                    <option value="project">プロジェクト</option>
-                </select>
-            </div>
-            <div class="form-group" id="habitSelectGroup" style="display: none;">
-                <label>関連する習慣</label>
-                <select id="taskHabitInput" class="input-field">
-                    <option value="">選択してください</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>説明</label>
-                <textarea id="taskDescInput" class="input-field" placeholder="説明（任意）" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label>予定時間（分）</label>
-                <input type="number" id="taskTimeInput" class="input-field" placeholder="60" min="0">
-            </div>
-            <div class="modal-actions">
-                <button id="saveTaskBtn" class="btn btn-primary">保存</button>
-                <button id="cancelTaskBtn" class="btn cancel">キャンセル</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 習慣モーダル -->
-    <div id="habitModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="habitModalTitle">習慣を追加</h2>
-            <div class="form-group">
-                <label>習慣名 *</label>
-                <input type="text" id="habitNameInput" class="input-field" placeholder="例: 読書">
-            </div>
-            <div class="form-group">
-                <label>アイコン</label>
-                <select id="habitIconInput" class="input-field">
-                    <option value="📚">📚 読書</option>
-                    <option value="📝">📝 日記</option>
-                    <option value="💪">💪 運動</option>
-                    <option value="🏃">🏃 トレーニング</option>
-                    <option value="💼">💼 作業A</option>
-                    <option value="⚙️">⚙️ 作業B</option>
-                    <option value="🧘">🧘 瞑想</option>
-                    <option value="💧">💧 水分補給</option>
-                    <option value="🎯">🎯 その他</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>繰り返し設定</label>
-                <select id="habitFrequencyInput" class="input-field">
-                    <option value="daily">毎日</option>
-                    <option value="weekdays">平日のみ</option>
-                    <option value="weekends">週末のみ</option>
-                    <option value="custom">カスタム</option>
-                </select>
-            </div>
-            <div class="form-group" id="customDaysGroup" style="display: none;">
-                <label>曜日選択</label>
-                <div class="days-selector">
-                    <label><input type="checkbox" value="0"> 日</label>
-                    <label><input type="checkbox" value="1"> 月</label>
-                    <label><input type="checkbox" value="2"> 火</label>
-                    <label><input type="checkbox" value="3"> 水</label>
-                    <label><input type="checkbox" value="4"> 木</label>
-                    <label><input type="checkbox" value="5"> 金</label>
-                    <label><input type="checkbox" value="6"> 土</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>目標時間（分）</label>
-                <input type="number" id="habitTargetTimeInput" class="input-field" placeholder="30" min="0">
-            </div>
-            <div class="form-group">
-                <label>リマインダー時刻</label>
-                <input type="time" id="habitReminderInput" class="input-field">
-            </div>
-            <div class="modal-actions">
-                <button id="saveHabitBtn" class="btn btn-primary">保存</button>
-                <button id="cancelHabitBtn" class="btn cancel">キャンセル</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 習慣記録モーダル -->
-    <div id="habitLogModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="habitLogModalTitle">習慣を記録</h2>
-            <div class="form-group">
-                <label>実施時間（分）</label>
-                <input type="number" id="habitLogTimeInput" class="input-field" placeholder="30" min="0">
-            </div>
-            <div class="form-group">
-                <label>メモ（何をやったか）</label>
-                <textarea id="habitLogNoteInput" class="input-field" placeholder="例: ○○の本を30ページ読んだ" rows="4"></textarea>
-            </div>
-            <div class="modal-actions">
-                <button id="saveHabitLogBtn" class="btn btn-primary">記録</button>
-                <button id="cancelHabitLogBtn" class="btn cancel">キャンセル</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 目標モーダル -->
-    <div id="goalModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="goalModalTitle">目標を追加</h2>
-            <div class="form-group">
-                <label>目標名 *</label>
-                <input type="text" id="goalNameInput" class="input-field" placeholder="例: TOEIC 800点">
-            </div>
-            <div class="form-group">
-                <label>期限</label>
-                <input type="date" id="goalDeadlineInput" class="input-field">
-            </div>
-            <div class="form-group">
-                <label>関連する習慣（複数選択可）</label>
-                <div id="goalHabitsSelector" class="checkbox-group"></div>
-            </div>
-            <div class="form-group">
-                <label>説明</label>
-                <textarea id="goalDescInput" class="input-field" placeholder="目標の詳細" rows="3"></textarea>
-            </div>
-            <div class="modal-actions">
-                <button id="saveGoalBtn" class="btn btn-primary">保存</button>
-                <button id="cancelGoalBtn" class="btn cancel">キャンセル</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- インポートモーダル -->
-    <div id="importModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>データをインポート</h2>
-            <input type="file" id="importFileInput" accept=".json">
-            <div class="modal-actions">
-                <button id="confirmImportBtn" class="btn btn-primary">インポート</button>
-                <button id="cancelImportBtn" class="btn cancel">キャンセル</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 通知エリア -->
-    <div id="notification" class="notification"></div>
 
     <!-- Firebase SDK -->
     <script type="module">
-        // Firebase モジュールのインポート
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
-        // Firebase 設定
         const firebaseConfig = {
             apiKey: "AIzaSyByOPObpGD_NebwLZZJXnp_jDVeRu0IfSs",
             authDomain: "taskhabit-3c667.firebaseapp.com",
@@ -366,30 +76,68 @@
             appId: "1:235440561788:web:9a5a5429908b14a4d0b3f9"
         };
 
-        // Firebase 初期化
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
 
-        // グローバルスコープに公開
-        window.firebaseAuth = auth;
-        window.firebaseDb = db;
-        window.firebaseGoogleProvider = GoogleAuthProvider;
-        window.firebaseSignInWithPopup = signInWithPopup;
-        window.firebaseOnAuthStateChanged = onAuthStateChanged;
-        window.firebaseSignOut = signOut;
-        window.firebaseDoc = doc;
-        window.firebaseSetDoc = setDoc;
-        window.firebaseGetDoc = getDoc;
-        window.firebaseOnSnapshot = onSnapshot;
-        window.firebaseCollection = collection;
-        window.firebaseQuery = query;
-        window.firebaseWhere = where;
-        window.firebaseGetDocs = getDocs;
+        const loginScreen = document.getElementById('loginScreen');
+        const appScreen = document.getElementById('appScreen');
+        const loginStatus = document.getElementById('loginStatus');
+        const loginBtn = document.getElementById('googleLoginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const currentUserEl = document.getElementById('currentUser');
+
+        // 初期化
+        loginStatus.textContent = '✅ 準備完了';
+        loginStatus.style.background = '#d4edda';
+        loginStatus.style.color = '#155724';
+        loginBtn.style.display = 'flex';
+        loginBtn.style.margin = '0 auto';
+
+        // ログインボタン
+        loginBtn.onclick = async () => {
+            try {
+                loginStatus.textContent = '⏳ ログイン中...';
+                loginStatus.style.background = '#fff3cd';
+                console.log('Google login started');
+                
+                await signInWithPopup(auth, provider);
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                loginStatus.textContent = '❌ エラー: ' + error.message;
+                loginStatus.style.background = '#f8d7da';
+                loginStatus.style.color = '#721c24';
+            }
+        };
+
+        // ログアウトボタン
+        logoutBtn.onclick = async () => {
+            await signOut(auth);
+            location.reload();
+        };
+
+        // 認証状態の監視
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('User logged in:', user);
+                loginScreen.style.display = 'none';
+                appScreen.style.display = 'block';
+                currentUserEl.textContent = user.displayName || user.email;
+                
+                // 今日の日付を表示
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+                document.getElementById('currentDate').textContent = today.toLocaleDateString('ja-JP', options);
+                
+            } else {
+                console.log('User not logged in');
+                loginScreen.style.display = 'flex';
+                appScreen.style.display = 'none';
+            }
+        });
 
         console.log('Firebase initialized successfully');
     </script>
-    
-    <script src="app.js"></script>
 </body>
 </html>
