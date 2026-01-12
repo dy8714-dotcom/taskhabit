@@ -34,7 +34,6 @@
 
     <!-- メインアプリ画面 -->
     <div id="appScreen" style="display: none;">
-        <!-- ヘッダー -->
         <header class="app-header">
             <div class="header-left">
                 <h1>📊 TaskHabit</h1>
@@ -47,97 +46,92 @@
             </div>
         </header>
 
-        <!-- ナビゲーション -->
         <nav class="nav-tabs">
             <button class="nav-tab active" data-view="dashboard">📊 ダッシュボード</button>
             <button class="nav-tab" data-view="tasks">📋 タスクボード</button>
             <button class="nav-tab" data-view="habits">🔥 習慣管理</button>
-            <button class="nav-tab" data-view="reports">📈 レポート</button>
-            <button class="nav-tab" data-view="goals">🎯 目標</button>
         </nav>
 
-        <div id="mainContent" style="padding: 20px;">
-            <h2>ダッシュボード</h2>
-            <p>アプリが正常に動作しています！</p>
+        <div id="dashboardView" class="view-container">
+            <div class="summary-cards">
+                <div class="summary-card">
+                    <div class="summary-icon">📋</div>
+                    <div class="summary-info">
+                        <div class="summary-label">今日のタスク</div>
+                        <div class="summary-value" id="todayTasksCount">0</div>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🔥</div>
+                    <div class="summary-info">
+                        <div class="summary-label">習慣達成率</div>
+                        <div class="summary-value" id="habitCompletionRate">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>🔥 今日の習慣</h2>
+                <div id="todayHabitsQuick" class="habits-quick-list"></div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2>📋 今日のタスク</h2>
+                <div id="todayTasksList" class="tasks-list"></div>
+            </div>
+        </div>
+
+        <div id="tasksView" class="view-container" style="display: none;">
+            <div class="control-bar">
+                <button id="addTaskBtn" class="btn btn-primary">➕ タスク追加</button>
+            </div>
+            <div id="tasksList"></div>
+        </div>
+
+        <div id="habitsView" class="view-container" style="display: none;">
+            <div class="control-bar">
+                <button id="addHabitBtn" class="btn btn-primary">➕ 習慣追加</button>
+            </div>
+            <div id="habitsGrid" class="habits-grid"></div>
+        </div>
+
+        <div class="data-controls">
+            <button id="exportBtn" class="btn btn-info">📥 エクスポート</button>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>タスクを追加</h2>
+            <div class="form-group">
+                <label>タスク名 *</label>
+                <input type="text" id="taskNameInput" class="input-field" placeholder="タスク名を入力">
+            </div>
+            <div class="modal-actions">
+                <button id="saveTaskBtn" class="btn btn-primary">保存</button>
+                <button class="btn cancel close-modal">キャンセル</button>
+            </div>
+        </div>
+    </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyByOPObpGD_NebwLZZJXnp_jDVeRu0IfSs",
-            authDomain: "taskhabit-3c667.firebaseapp.com",
-            projectId: "taskhabit-3c667",
-            storageBucket: "taskhabit-3c667.firebasestorage.app",
-            messagingSenderId: "235440561788",
-            appId: "1:235440561788:web:9a5a5429908b14a4d0b3f9"
-        };
+    <div id="habitModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>習慣を追加</h2>
+            <div class="form-group">
+                <label>習慣名 *</label>
+                <input type="text" id="habitNameInput" class="input-field" placeholder="例: 読書">
+            </div>
+            <div class="modal-actions">
+                <button id="saveHabitBtn" class="btn btn-primary">保存</button>
+                <button class="btn cancel close-modal">キャンセル</button>
+            </div>
+        </div>
+    </div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
+    <div id="notification" class="notification"></div>
 
-        const loginScreen = document.getElementById('loginScreen');
-        const appScreen = document.getElementById('appScreen');
-        const loginStatus = document.getElementById('loginStatus');
-        const loginBtn = document.getElementById('googleLoginBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const currentUserEl = document.getElementById('currentUser');
-
-        // 初期化
-        loginStatus.textContent = '✅ 準備完了';
-        loginStatus.style.background = '#d4edda';
-        loginStatus.style.color = '#155724';
-        loginBtn.style.display = 'flex';
-        loginBtn.style.margin = '0 auto';
-
-        // ログインボタン
-        loginBtn.onclick = async () => {
-            try {
-                loginStatus.textContent = '⏳ ログイン中...';
-                loginStatus.style.background = '#fff3cd';
-                console.log('Google login started');
-                
-                await signInWithPopup(auth, provider);
-                
-            } catch (error) {
-                console.error('Login error:', error);
-                loginStatus.textContent = '❌ エラー: ' + error.message;
-                loginStatus.style.background = '#f8d7da';
-                loginStatus.style.color = '#721c24';
-            }
-        };
-
-        // ログアウトボタン
-        logoutBtn.onclick = async () => {
-            await signOut(auth);
-            location.reload();
-        };
-
-        // 認証状態の監視
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log('User logged in:', user);
-                loginScreen.style.display = 'none';
-                appScreen.style.display = 'block';
-                currentUserEl.textContent = user.displayName || user.email;
-                
-                // 今日の日付を表示
-                const today = new Date();
-                const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-                document.getElementById('currentDate').textContent = today.toLocaleDateString('ja-JP', options);
-                
-            } else {
-                console.log('User not logged in');
-                loginScreen.style.display = 'flex';
-                appScreen.style.display = 'none';
-            }
-        });
-
-        console.log('Firebase initialized successfully');
-    </script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
