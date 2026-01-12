@@ -7,131 +7,214 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- ログイン画面 -->
-    <div id="loginScreen" class="login-container">
-        <div class="login-card">
+    <!-- ヘッダー -->
+    <header class="app-header">
+        <div class="header-left">
             <h1>📊 TaskHabit</h1>
-            <p class="subtitle">タスク管理 × 習慣トラッカー</p>
-            <p class="sync-badge">☁️ クラウド同期対応</p>
-            
-            <div id="loginStatus" style="margin: 20px 0; padding: 15px; background: #f0f0f0; border-radius: 8px; font-size: 14px;">
-                読み込み中...
-            </div>
-            
-            <button id="googleLoginBtn" class="btn btn-google" style="display:none;">
-                <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                </svg>
-                Google でログイン
-            </button>
-            <p class="login-info">※ Googleアカウントで簡単ログイン</p>
-            <p class="login-info">※ PC・スマホ間で自動同期</p>
+            <div id="currentDate" class="current-date"></div>
         </div>
-    </div>
+        <div class="header-right">
+            <button id="exportBtn" class="btn btn-secondary">📥 エクスポート</button>
+            <button id="importBtn" class="btn btn-secondary">📤 インポート</button>
+        </div>
+    </header>
 
-    <!-- メインアプリ画面 -->
-    <div id="appScreen" style="display: none;">
-        <header class="app-header">
-            <div class="header-left">
-                <h1>📊 TaskHabit</h1>
-                <div id="currentDate" class="current-date"></div>
-            </div>
-            <div class="header-right">
-                <span id="syncStatus" class="sync-status">☁️ 同期済み</span>
-                <span id="currentUser" class="current-user"></span>
-                <button id="logoutBtn" class="btn btn-danger">ログアウト</button>
-            </div>
-        </header>
+    <!-- ナビゲーションタブ -->
+    <nav class="nav-tabs">
+        <button class="nav-tab active" data-view="dashboard">📊 ダッシュボード</button>
+        <button class="nav-tab" data-view="tasks">✅ タスクボード</button>
+        <button class="nav-tab" data-view="habits">🔥 習慣管理</button>
+        <button class="nav-tab" data-view="goals">🎯 目標管理</button>
+    </nav>
 
-        <nav class="nav-tabs">
-            <button class="nav-tab active" data-view="dashboard">📊 ダッシュボード</button>
-            <button class="nav-tab" data-view="tasks">📋 タスクボード</button>
-            <button class="nav-tab" data-view="habits">🔥 習慣管理</button>
-        </nav>
-
-        <div id="dashboardView" class="view-container">
-            <div class="summary-cards">
-                <div class="summary-card">
-                    <div class="summary-icon">📋</div>
-                    <div class="summary-info">
-                        <div class="summary-label">今日のタスク</div>
-                        <div class="summary-value" id="todayTasksCount">0</div>
-                    </div>
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+        <!-- ダッシュボード -->
+        <div id="dashboard-view" class="view-container active">
+            <!-- 統計カード -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-value" id="totalTasks">0</div>
+                    <div class="stat-label">今日のタスク</div>
                 </div>
-                <div class="summary-card">
-                    <div class="summary-icon">🔥</div>
-                    <div class="summary-info">
-                        <div class="summary-label">習慣達成率</div>
-                        <div class="summary-value" id="habitCompletionRate">0%</div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value" id="habitStreak">0%</div>
+                    <div class="stat-label">習慣達成率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value" id="goalsProgress">0</div>
+                    <div class="stat-label">最長連続記録</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-value" id="totalTime">0h</div>
+                    <div class="stat-label">累計作業時間</div>
                 </div>
             </div>
 
-            <div class="dashboard-section">
-                <h2>🔥 今日の習慣</h2>
-                <div id="todayHabitsQuick" class="habits-quick-list"></div>
-            </div>
+            <!-- 今日のタスク -->
+            <section class="dashboard-section">
+                <h2>📝 今日のタスク</h2>
+                <div id="todayTasks" class="task-list"></div>
+            </section>
 
-            <div class="dashboard-section">
-                <h2>📋 今日のタスク</h2>
-                <div id="todayTasksList" class="tasks-list"></div>
+            <!-- アクティブな習慣 -->
+            <section class="dashboard-section">
+                <h2>🔥 アクティブな習慣</h2>
+                <div id="activeHabits" class="habit-grid"></div>
+            </section>
+        </div>
+
+        <!-- タスクボードビュー -->
+        <div id="tasks-view" class="view-container">
+            <div class="view-header">
+                <h2>✅ タスクボード</h2>
+                <button id="addTaskBtn" class="btn btn-primary">+ タスクを追加</button>
+            </div>
+            <div class="kanban-board">
+                <div class="kanban-column" data-status="todo">
+                    <h3 class="column-header">📋 未着手</h3>
+                    <div id="todoColumn" class="task-list kanban-tasks"></div>
+                </div>
+                <div class="kanban-column" data-status="in_progress">
+                    <h3 class="column-header">🔄 進行中</h3>
+                    <div id="inProgressColumn" class="task-list kanban-tasks"></div>
+                </div>
+                <div class="kanban-column" data-status="done">
+                    <h3 class="column-header">✅ 完了</h3>
+                    <div id="doneColumn" class="task-list kanban-tasks"></div>
+                </div>
             </div>
         </div>
 
-        <div id="tasksView" class="view-container" style="display: none;">
-            <div class="control-bar">
-                <button id="addTaskBtn" class="btn btn-primary">➕ タスク追加</button>
+        <!-- 習慣管理ビュー -->
+        <div id="habits-view" class="view-container">
+            <div class="view-header">
+                <h2>🔥 習慣管理</h2>
+                <button id="addHabitBtn" class="btn btn-primary">+ 習慣を追加</button>
             </div>
-            <div id="tasksList"></div>
+            <div id="habitsList" class="habit-grid"></div>
         </div>
 
-        <div id="habitsView" class="view-container" style="display: none;">
-            <div class="control-bar">
-                <button id="addHabitBtn" class="btn btn-primary">➕ 習慣追加</button>
+        <!-- 目標管理ビュー -->
+        <div id="goals-view" class="view-container">
+            <div class="view-header">
+                <h2>🎯 目標管理</h2>
+                <button id="addGoalBtn" class="btn btn-primary">+ 目標を追加</button>
             </div>
-            <div id="habitsGrid" class="habits-grid"></div>
+            <div id="goalsList" class="goals-grid"></div>
         </div>
+    </main>
 
-        <div class="data-controls">
-            <button id="exportBtn" class="btn btn-info">📥 エクスポート</button>
-        </div>
-    </div>
-
+    <!-- モーダル：タスク追加/編集 -->
     <div id="taskModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>タスクを追加</h2>
-            <div class="form-group">
-                <label>タスク名 *</label>
-                <input type="text" id="taskNameInput" class="input-field" placeholder="タスク名を入力">
-            </div>
-            <div class="modal-actions">
-                <button id="saveTaskBtn" class="btn btn-primary">保存</button>
-                <button class="btn cancel close-modal">キャンセル</button>
-            </div>
+            <h2 id="taskModalTitle">タスクを追加</h2>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="taskTitle">タスク名</label>
+                    <input type="text" id="taskTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskDescription">説明</label>
+                    <textarea id="taskDescription" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskPriority">優先度</label>
+                        <select id="taskPriority">
+                            <option value="low">低</option>
+                            <option value="medium" selected>中</option>
+                            <option value="high">高</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDueDate">期限</label>
+                        <input type="date" id="taskDueDate">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelTaskBtn">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
         </div>
     </div>
 
+    <!-- モーダル：習慣追加/編集 -->
     <div id="habitModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>習慣を追加</h2>
-            <div class="form-group">
-                <label>習慣名 *</label>
-                <input type="text" id="habitNameInput" class="input-field" placeholder="例: 読書">
-            </div>
-            <div class="modal-actions">
-                <button id="saveHabitBtn" class="btn btn-primary">保存</button>
-                <button class="btn cancel close-modal">キャンセル</button>
-            </div>
+            <h2 id="habitModalTitle">習慣を追加</h2>
+            <form id="habitForm">
+                <div class="form-group">
+                    <label for="habitName">習慣名</label>
+                    <input type="text" id="habitName" required>
+                </div>
+                <div class="form-group">
+                    <label for="habitFrequency">頻度</label>
+                    <select id="habitFrequency">
+                        <option value="daily">毎日</option>
+                        <option value="weekly">毎週</option>
+                        <option value="custom">カスタム</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="habitIcon">アイコン</label>
+                    <input type="text" id="habitIcon" placeholder="📚" maxlength="2">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelHabitBtn">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <div id="notification" class="notification"></div>
+    <!-- モーダル：目標追加/編集 -->
+    <div id="goalModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="goalModalTitle">目標を追加</h2>
+            <form id="goalForm">
+                <div class="form-group">
+                    <label for="goalTitle">目標名</label>
+                    <input type="text" id="goalTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="goalDescription">説明</label>
+                    <textarea id="goalDescription" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="goalTarget">目標値</label>
+                        <input type="number" id="goalTarget" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="goalCurrent">現在値</label>
+                        <input type="number" id="goalCurrent" min="0" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="goalDeadline">期限</label>
+                    <input type="date" id="goalDeadline">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelGoalBtn">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    <script type="module" src="app.js"></script>
+    <!-- ファイルインポート用の隠しinput -->
+    <input type="file" id="fileInput" accept=".json" style="display: none;">
+
+    <!-- JavaScriptファイルの読み込み -->
+    <script src="app.js"></script>
 </body>
 </html>
